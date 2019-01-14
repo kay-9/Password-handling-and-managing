@@ -15,10 +15,20 @@ namespace WebApplication.Controllers
             return View();
         }
         [HttpGet]
-        public ActionResult Add(int id=0)
+        public ActionResult Add(int id = 0)
         {
             User usermodel1 = new User();
             return View(usermodel1);
+        }
+        [HttpPost]
+        public ActionResult Add(User usermodel)
+        {
+            using (MyDataBaseEntities dbmodel = new MyDataBaseEntities())
+            {
+                dbmodel.User.Add(usermodel);
+                dbmodel.SaveChanges();
+                return View(new User());
+            }
         }
     }
 }

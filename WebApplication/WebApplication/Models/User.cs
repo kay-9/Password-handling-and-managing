@@ -11,10 +11,20 @@ namespace WebApplication.Models
 {
     using System;
     using System.Collections.Generic;
+    using System.ComponentModel.DataAnnotations;
     
     public partial class User
     {
+        [Required(ErrorMessage ="this field is required")]
         public string UserName { get; set; }
+
+        [Required(ErrorMessage = "this field is required")]
+        [DataType(DataType.Password)]
         public string Password { get; set; }
+
+        [Required(ErrorMessage = "this field is required")]
+        [DataType(DataType.Password)]
+        [Compare("Password")]
+        public string ConfirmPassword { get; set; }
     }
 }
