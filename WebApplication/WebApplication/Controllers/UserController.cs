@@ -37,5 +37,28 @@ namespace WebApplication.Controllers
                 return View(new User());
             }
         }
+        [HttpPost]
+        public ActionResult Login(User userModel)
+        {
+            using (MyDataBaseEntities dbmodel = new MyDataBaseEntities())
+            {
+                User user1 = (from u in dbmodel.User where u.UserName.Equals(userModel.UserName) select u).FirstOrDefault();
+                if (user1==null)
+                {
+                    ViewBag.Error = "Username does not exist";
+                    return View("Add", new User());
+                }
+                else if (user1.Password == userModel.Password)
+                {
+                    ViewBag.SuccessMessage = "authentified";
+                    return View("Add", new User());
+                }
+                else
+                {
+                    ViewBag.Error = " incorrect password , try again ";
+                    return View("Add", new User());
+                }
+            }
+        }
     }
 }
