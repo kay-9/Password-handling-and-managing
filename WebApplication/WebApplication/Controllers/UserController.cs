@@ -25,8 +25,15 @@ namespace WebApplication.Controllers
         {
             using (MyDataBaseEntities dbmodel = new MyDataBaseEntities())
             {
+                if (dbmodel.User.Any(x => x.UserName == usermodel.UserName))
+                {
+                    ViewBag.DuplicateMessage = "Username already exists";
+                    return View("Add", new User());
+                }
+
                 dbmodel.User.Add(usermodel);
                 dbmodel.SaveChanges();
+                ViewBag.SuccessMessage = "Success Registration";
                 return View(new User());
             }
         }
