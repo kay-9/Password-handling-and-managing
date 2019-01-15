@@ -45,9 +45,6 @@ namespace WebApplication.Controllers
                 //change password to hash password                     
                 usermodel.Password = hash.ToString();
 
-                //Change confirmPassword too !!!!                      
-                usermodel.ConfirmPassword = usermodel.Password;
-
                 dbmodel.User.Add(usermodel);
                 dbmodel.SaveChanges();
                 ViewBag.SuccessMessage = "Success Registration";
@@ -60,20 +57,33 @@ namespace WebApplication.Controllers
             using (MyDataBaseEntities dbmodel = new MyDataBaseEntities())
             {
                 User user1 = (from u in dbmodel.User where u.UserName.Equals(userModel.UserName) select u).FirstOrDefault();
-                if (user1==null)
+                if (user1 == null)
                 {
                     ViewBag.Error = "Username does not exist";
                     return View("Add", new User());
                 }
-                else if (user1.Password == userModel.Password)
-                {
-                    ViewBag.SuccessMessage = "authentified";
-                    return View("Add", new User());
-                }
                 else
                 {
-                    ViewBag.Error = " incorrect password , try again ";
-                    return View("Add", new User());
+                    var crypt = new SHA256Managed();
+                    var hash = new StringBuilder();
+
+                    byte[] crypto = crypt.ComputeHash(Encoding.UTF8.GetBytes(userModel.Password));
+                    foreach (byte theByte in crypto)
+                    {
+                        hash.Append(theByte.ToString("x2"));
+                    }
+                   
+                    userModel.Password = hash.ToString();
+                    if (user1.Password == userModel.Password)
+                    {
+                        ViewBag.SuccessMessage = "authentified";
+                        return View("Add", new User());
+                    }
+                    else
+                    {
+                        ViewBag.Error = " incorrect password , try again ";
+                        return View("Add", new User());
+                    }
                 }
             }
         }
