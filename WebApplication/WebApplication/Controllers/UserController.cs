@@ -32,6 +32,13 @@ namespace WebApplication.Controllers
                     ViewBag.DuplicateMessage = "Username already exists";
                     return View("Add", new User());
                 }
+
+                RNGCryptoServiceProvider rng = new RNGCryptoServiceProvider();
+                byte[] sel = new byte[4];
+                rng.GetBytes(sel);
+                usermodel.Salt = Convert.ToBase64String(sel);
+                usermodel.Password += usermodel.Salt;
+
                 //hachage Password                     
                 var crypt = new SHA256Managed();
                 var hash = new StringBuilder();                      
@@ -44,6 +51,7 @@ namespace WebApplication.Controllers
 
                 //change password to hash password                     
                 usermodel.Password = hash.ToString();
+                usermodel.ConfirmPassword = usermodel.Password;
 
                 dbmodel.User.Add(usermodel);
                 dbmodel.SaveChanges();
@@ -66,7 +74,7 @@ namespace WebApplication.Controllers
                 {
                     var crypt = new SHA256Managed();
                     var hash = new StringBuilder();
-
+                    userModel.Password += user1.Salt;
                     byte[] crypto = crypt.ComputeHash(Encoding.UTF8.GetBytes(userModel.Password));
                     foreach (byte theByte in crypto)
                     {

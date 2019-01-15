@@ -6,6 +6,7 @@
     </Key>
     <Property Name="UserName" Type="varchar" MaxLength="50" Nullable="false" />
     <Property Name="Password" Type="varchar" MaxLength="300" />
+    <Property Name="Salt" Type="varchar" MaxLength="20" />
   </EntityType>
   <EntityContainer Name="MyDataBaseModelStoreContainer">
     <EntitySet Name="User" EntityType="Self.User" Schema="dbo" store:Type="Tables" />

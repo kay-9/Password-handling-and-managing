@@ -11,6 +11,7 @@
           </Key>
           <Property Name="UserName" Type="varchar" MaxLength="50" Nullable="false" />
           <Property Name="Password" Type="varchar" MaxLength="300" />
+          <Property Name="Salt" Type="varchar" MaxLength="20" />
         </EntityType>
         <EntityContainer Name="MyDataBaseModelStoreContainer">
           <EntitySet Name="User" EntityType="Self.User" Schema="dbo" store:Type="Tables" />
@@ -25,6 +26,7 @@
           </Key>
           <Property Name="UserName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="Password" Type="String" MaxLength="300" FixedLength="false" Unicode="false" />
+          <Property Name="Salt" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityContainer Name="MyDataBaseEntities" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="User" EntityType="Self.User" />
@@ -38,6 +40,7 @@
           <EntitySetMapping Name="User">
             <EntityTypeMapping TypeName="MyDataBaseModel.User">
               <MappingFragment StoreEntitySet="User">
+                <ScalarProperty Name="Salt" ColumnName="Salt" />
                 <ScalarProperty Name="UserName" ColumnName="UserName" />
                 <ScalarProperty Name="Password" ColumnName="Password" />
               </MappingFragment>
