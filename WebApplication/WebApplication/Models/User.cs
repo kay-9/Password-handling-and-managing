@@ -12,10 +12,10 @@ namespace WebApplication.Models
     using System;
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
-    
+
     public partial class User
     {
-        [Required(ErrorMessage ="this field is required")]
+        [Required(ErrorMessage = "this field is required")]
         public string UserName { get; set; }
 
         [Required(ErrorMessage = "this field is required")]

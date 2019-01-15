@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography;
+using System.Text;
 using System.Web;
 using System.Web.Mvc;
 using WebApplication.Models;
@@ -30,6 +32,21 @@ namespace WebApplication.Controllers
                     ViewBag.DuplicateMessage = "Username already exists";
                     return View("Add", new User());
                 }
+                //hachage Password                     
+                var crypt = new SHA256Managed();
+                var hash = new StringBuilder();                      
+
+                byte[] crypto = crypt.ComputeHash(Encoding.UTF8.GetBytes(usermodel.Password));
+                foreach (byte theByte in crypto)
+                {
+                    hash.Append(theByte.ToString("x2"));
+                }
+
+                //change password to hash password                     
+                usermodel.Password = hash.ToString();
+
+                //Change confirmPassword too !!!!                      
+                usermodel.ConfirmPassword = usermodel.Password;
 
                 dbmodel.User.Add(usermodel);
                 dbmodel.SaveChanges();
