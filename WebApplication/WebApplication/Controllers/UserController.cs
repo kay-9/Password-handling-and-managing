@@ -1,4 +1,5 @@
-﻿using System;
+﻿using log4net;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Cryptography;
@@ -11,6 +12,7 @@ namespace WebApplication.Controllers
 {
     public class UserController : Controller
     {
+        private ILog log = LogManager.GetLogger(typeof(UserController));
         // GET: User
         public ActionResult Index()
         {
@@ -29,6 +31,7 @@ namespace WebApplication.Controllers
             {
                 if (dbmodel.User.Any(x => x.UserName == usermodel.UserName))
                 {
+                    log.Info(usermodel.UserName + " already exists");
                     ViewBag.DuplicateMessage = "Username already exists";
                     return View("Add", new User());
                 }
@@ -55,6 +58,7 @@ namespace WebApplication.Controllers
 
                 dbmodel.User.Add(usermodel);
                 dbmodel.SaveChanges();
+                log.Info(usermodel.UserName + " Success Registration");
                 ViewBag.SuccessMessage = "Success Registration";
                 return View(new User());
             }
@@ -62,11 +66,13 @@ namespace WebApplication.Controllers
         [HttpPost]
         public ActionResult Login(User userModel)
         {
+            //log.Info("msg");
             using (MyDataBaseEntities dbmodel = new MyDataBaseEntities())
             {
                 User user1 = (from u in dbmodel.User where u.UserName.Equals(userModel.UserName) select u).FirstOrDefault();
                 if (user1 == null)
                 {
+                    log.Info(userModel.UserName + " does not exist");
                     ViewBag.Error = "Username does not exist";
                     return View("Add", new User());
                 }
@@ -84,11 +90,13 @@ namespace WebApplication.Controllers
                     userModel.Password = hash.ToString();
                     if (user1.Password == userModel.Password)
                     {
+                        log.Info(user1.UserName + " authentified");
                         ViewBag.SuccessMessage = "authentified";
                         return View("Add", new User());
                     }
                     else
                     {
+                        log.Info(user1.UserName + " login with incorrect password");
                         ViewBag.Error = " incorrect password , try again ";
                         return View("Add", new User());
                     }

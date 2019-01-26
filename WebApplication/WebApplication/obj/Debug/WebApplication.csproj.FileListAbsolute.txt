@@ -82,3 +82,5 @@ C:\Users\10\Desktop\Password handling and managing\WebApplication\WebApplication
 C:\Users\10\Desktop\Password handling and managing\WebApplication\WebApplication\obj\Debug\WebApplication.csproj.CopyComplete
 C:\Users\10\Desktop\Password handling and managing\WebApplication\WebApplication\obj\Debug\WebApplication.dll
 C:\Users\10\Desktop\Password handling and managing\WebApplication\WebApplication\obj\Debug\WebApplication.pdb
+C:\Users\10\Desktop\Password handling and managing\WebApplication\WebApplication\bin\log4net.dll
+C:\Users\10\Desktop\Password handling and managing\WebApplication\WebApplication\bin\log4net.xml
